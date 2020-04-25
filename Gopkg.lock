@@ -1088,14 +1088,6 @@
   version = "v1.17.0"
 
 [[projects]]
-  digest = "1:dd549e360e5a8f982a28c2bcbe667307ceffe538ed9afc7c965524f1ac285b3f"
-  name = "gopkg.in/go-playground/validator.v8"
-  packages = ["."]
-  pruneopts = ""
-  revision = "5f1438d3fca68893a817e4a66806cea46a9e4ebf"
-  version = "v8.18.2"
-
-[[projects]]
   digest = "1:dd95cd9b5ad7438c5149f39b3a4af4d6d0da845df9b51e73d41e89184f124290"
   name = "gopkg.in/go-playground/validator.v9"
   packages = ["."]

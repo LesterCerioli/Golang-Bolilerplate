@@ -82,9 +82,9 @@ Next, check Jaeger (OpenTracing) at http://localhost:16686/ and Redis-Commander 
 
 ### Verification
  To verify that your project is running correctly, simply browse the following:
-  - http://localhost/health/live - Kubernetes liveness
-  - http://localhost/health/ready - Kubernetes readiness
-  - http://localhost/metrics - Prometheus instrumentation
+  - http://localhost:8080/health/live - Kubernetes liveness
+  - http://localhost:8080/health/ready - Kubernetes readiness
+  - http://localhost:8080/metrics - Prometheus instrumentation
   - http://localhost:8080/swaggerui/ - Swagger UI
   - http://localhost:8080/v1/visit/__INT__ - gRPC Gateway, replace __INT__ with any numeric value
 Or, check the logs. Logs are writing STDOUT in a JSON format.

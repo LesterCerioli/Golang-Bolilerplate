@@ -1,4 +1,4 @@
-FROM golang:1.11.1 as builder
+FROM golang:1.14.2 as builder
 
 # Arguments to Env variables
 ARG build_env
@@ -28,16 +28,15 @@ RUN curl -OL "https://github.com/google/protobuf/releases/download/v${PROTOBUF_R
 
 RUN go get -u github.com/grpc-ecosystem/grpc-gateway/protoc-gen-grpc-gateway
 RUN go get -u github.com/grpc-ecosystem/grpc-gateway/protoc-gen-swagger
-RUN go get -u github.com/lyft/protoc-gen-validate
+RUN go get -u github.com/envoyproxy/protoc-gen-validate
 
 # Go based task runner
 RUN go get -u github.com/markbates/grift
 
 # Dep
+Run go get -u github.com/golang/dep/cmd/dep
 ADD Gopkg.toml Gopkg.toml
 ADD Gopkg.lock Gopkg.lock
-
-Run go get -u github.com/golang/dep/cmd/dep
 Run dep ensure --vendor-only
 
 # Install the correct protoc-gen-go in the correct version

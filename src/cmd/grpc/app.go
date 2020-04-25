@@ -286,7 +286,7 @@ func main() {
 		box := swaggerui.GetBox()
 		http.Handle(conf.GetString("swagger.ui.route.group"), http.StripPrefix(conf.GetString("swagger.ui.route.group"), http.FileServer(box)))
 		http.HandleFunc(conf.GetString("swagger.json.route.group"), func(w http.ResponseWriter, r *http.Request) {
-			http.ServeFile(w, r, "src/app/proto/visit_service.swagger.json")
+			http.ServeFile(w, r, "src/transport/grpc/proto/visit_transport.swagger.json")
 		})
 	}
 

@@ -1,11 +1,4 @@
 version: "2"
-volumes:
-  vendor_dir:
-    driver: local
-    driver_opts:
-      type: none
-      o: bind
-      device: "/home/eldad/go/src/github.com/eldad87/go-boilerplate/vendor"
 services:
   app:
     environment:
@@ -59,11 +52,10 @@ services:
         build_env: 'development'
         app_port: 8080
         app_grpc_port: 8082
-        protobuf_release_tag: '3.6.1'
+        protobuf_release_tag: '3.11.4'
     security_opt:
       - seccomp:unconfined
     volumes:
-      - vendor_dir:/go/src/github.com/eldad87/go-boilerplate/vendor
       - ./src:/go/src/github.com/eldad87/go-boilerplate/src
       - ./Gopkg.lock:/go/src/github.com/eldad87/go-boilerplate/Gopkg.lock
       - ./Gopkg.toml:/go/src/github.com/eldad87/go-boilerplate/Gopkg.toml

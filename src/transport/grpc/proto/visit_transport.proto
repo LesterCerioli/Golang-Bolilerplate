@@ -3,7 +3,7 @@ package pb;
 
 import "google/protobuf/timestamp.proto";
 import "google/api/annotations.proto";
-import "github.com/lyft/protoc-gen-validate/validate/validate.proto";
+import "github.com/envoyproxy/protoc-gen-validate/validate/validate.proto";
 
 service VisitTransport {
     // Simple return the visit id
