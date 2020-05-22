@@ -57,9 +57,11 @@ services:
       - seccomp:unconfined
     volumes:
       - ./src:/go/src/github.com/eldad87/go-boilerplate/src
-      - ./Gopkg.lock:/go/src/github.com/eldad87/go-boilerplate/Gopkg.lock
-      - ./Gopkg.toml:/go/src/github.com/eldad87/go-boilerplate/Gopkg.toml
+      - ./go.mod:/go/src/github.com/eldad87/go-boilerplate/go.mod
+      - ./go.sum:/go/src/github.com/eldad87/go-boilerplate/go.sum
+      - ./vendor:/go/src/github.com/eldad87/go-boilerplate/vendor_host
       - ./src/config/development/sqlboiler.yaml:/go/src/github.com/eldad87/go-boilerplate/sqlboiler.yaml
+      - ./data/mod:/go/pkg/mod
     ports:
       - "8080:8080"
       - "8082:8082"
@@ -67,6 +69,7 @@ services:
       - redis
       - rabbit
       - db
+      - jaeger
   redis:
     image: redis
     expose:

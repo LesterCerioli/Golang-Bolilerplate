@@ -1,0 +1,123 @@
+syntax = "proto3";
+package pb;
+
+import "google/protobuf/timestamp.proto";
+import "google/api/annotations.proto";
+import "github.com/envoyproxy/protoc-gen-validate/validate/validate.proto";
+import "google/protobuf/wrappers.proto";
+import "src/transport/grpc/proto/generics.proto";
+import "github.com/srikrsna/protoc-gen-gotag/tagger/tagger.proto";
+
+service Business {
+    // Simple return the business by id
+    rpc Get(ID) returns (BusinessResponse) {
+        option (google.api.http) = {
+          get: "/v1/business/{ID}"
+        };
+    }
+
+    // Create Business & Offices & Main Employee
+    rpc Create(BusinessCreateRequest) returns (BusinessCreateResponse) {
+        option (google.api.http) = {
+          post: "/v1/business"
+          body: "*"
+        };
+    }
+
+    // Update Business
+    rpc Update(BusinessUpdateRequest) returns (BusinessResponse) {
+        option (google.api.http) = {
+          put: "/v1/business/{ID}"
+          body: "*"
+        };
+    }
+}
+
+// Business Update Request
+message BusinessUpdateRequest {
+    uint32 ID = 1 [(tagger.tags) = "json:\"id\"", (validate.rules).uint32.gt = 0];
+    string Name = 2 [(tagger.tags) = "json:\"name\"", (validate.rules).string.min_len = 2];
+    google.protobuf.StringValue Website = 3 [(tagger.tags) = "json:\"website\"", (validate.rules).string.uri = true];
+};
+
+// Business Get/Update Response
+message BusinessResponse {
+    uint32 ID = 1 [(tagger.tags) = "json:\"id\""];
+    string Name = 2 [(tagger.tags) = "json:\"name\""];
+    google.protobuf.StringValue Website = 3 [(tagger.tags) = "json:\"website\""];
+    google.protobuf.Timestamp CreatedAt = 4 [(tagger.tags) = "json:\"created_at\""];
+    google.protobuf.Timestamp UpdatedAt = 5 [(tagger.tags) = "json:\"updated_at\""];
+};
+
+// Business Create Request
+message BusinessCreateRequest {
+    string Name = 1 [(tagger.tags) = "json:\"name\"", (validate.rules).string.min_len = 2];
+    google.protobuf.StringValue Website = 2 [(tagger.tags) = "json:\"website\"", (validate.rules).string.uri = true];
+    repeated OfficeRequest offices = 3 [(tagger.tags) = "json:\"offices\"", (validate.rules).repeated.min_items = 1];
+    repeated EmployeeRequest Employees = 4 [(tagger.tags) = "json:\"employees\"", (validate.rules).repeated.min_items = 1, (validate.rules).repeated.max_items = 2];
+};
+
+// Business Create Response
+message BusinessCreateResponse {
+
+    uint32 ID = 1 [(tagger.tags) = "json:\"id\""];
+    string Name = 2 [(tagger.tags) = "json:\"name\""];
+    google.protobuf.StringValue Website = 3 [(tagger.tags) = "json:\"website\""];
+    repeated OfficesResponse Offices = 4 [(tagger.tags) = "json:\"offices\""];
+    repeated EmployeeResponse Employees = 5 [(tagger.tags) = "json:\"employees\""];
+
+    google.protobuf.Timestamp CreatedAt = 6 [(tagger.tags) = "json:\"created_at\""];
+    google.protobuf.Timestamp UpdatedAt = 7 [(tagger.tags) = "json:\"updated_at\""];
+};
+
+
+// Office Create Request
+message OfficeRequest {
+    string Name = 2 [(tagger.tags) = "json:\"name\"", (validate.rules).string.min_len = 2];
+    google.protobuf.StringValue Email = 3 [(tagger.tags) = "json:\"email\"", (validate.rules).message.required = false, (validate.rules).string.email = true];
+    google.protobuf.StringValue Phone = 4 [(tagger.tags) = "json:\"phone\"", (validate.rules).string.min_len = 8];
+    google.protobuf.StringValue Country = 5 [(tagger.tags) = "json:\"country\"", (validate.rules).string.min_len = 2];
+    google.protobuf.StringValue State = 6 [(tagger.tags) = "json:\"state\"", (validate.rules).string.min_len = 2];
+    google.protobuf.StringValue City = 8 [(tagger.tags) = "json:\"city\"", (validate.rules).string.min_len = 2];
+    google.protobuf.StringValue Address = 9 [(tagger.tags) = "json:\"address\"", (validate.rules).string.min_len = 2];
+    google.protobuf.StringValue Zipcode = 10 [(tagger.tags) = "json:\"zipcode\"", (validate.rules).string.min_len = 2];
+}
+
+// Office Create Response, Update Request + Response
+message OfficesResponse {
+    uint32 ID = 1 [(tagger.tags) = "json:\"id\""];
+    string Name = 2 [(tagger.tags) = "json:\"name\""];
+    google.protobuf.StringValue Email = 3 [(tagger.tags) = "json:\"email\""];
+    google.protobuf.StringValue Phone = 4 [(tagger.tags) = "json:\"phone\""];
+    google.protobuf.StringValue Country = 5 [(tagger.tags) = "json:\"country\""];
+    google.protobuf.StringValue State = 6 [(tagger.tags) = "json:\"state\""];
+    google.protobuf.StringValue City = 7 [(tagger.tags) = "json:\"city\""];
+    google.protobuf.StringValue Address = 8 [(tagger.tags) = "json:\"address\""];
+    google.protobuf.StringValue Zipcode = 9 [(tagger.tags) = "json:\"zipcode\""];
+
+    google.protobuf.Timestamp CreatedAt = 11 [(tagger.tags) = "json:\"created_at\""];
+    google.protobuf.Timestamp UpdatedAt = 12 [(tagger.tags) = "json:\"updated_at\""];
+};
+
+
+// Employee Create Request
+message EmployeeRequest {
+    string FirstName = 2 [(tagger.tags) = "json:\"first_name\"", (validate.rules).string.min_len = 2];
+    google.protobuf.StringValue LastName = 3 [(tagger.tags) = "json:\"last_name\"", (validate.rules).string.min_len = 2];
+
+    string Email = 4 [(tagger.tags) = "json:\"email\"", (validate.rules).string.email = true];
+    string Password = 5 [(tagger.tags) = "json:\"password\"", (validate.rules).string.min_len = 8, (validate.rules).string.max_len = 50];
+}
+
+// Employee Create Response, Update Request + Response
+message EmployeeResponse {
+    uint32 ID = 1 [(tagger.tags) = "json:\"id\""];
+
+    string FirstName = 2 [(tagger.tags) = "json:\"first_name\""];
+    google.protobuf.StringValue LastName = 3 [(tagger.tags) = "json:\"last_name\""];
+    string Email = 4 [(tagger.tags) = "json:\"email\""];
+    bool Active = 5 [(tagger.tags) = "json:\"active\""];
+
+    google.protobuf.Timestamp CreatedAt = 6 [(tagger.tags) = "json:\"created_at\""];
+    google.protobuf.Timestamp UpdatedAt = 7 [(tagger.tags) = "json:\"updated_at\""];
+};

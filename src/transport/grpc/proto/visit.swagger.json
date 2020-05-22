@@ -1,7 +1,7 @@
 {
   "swagger": "2.0",
   "info": {
-    "title": "src/transport/grpc/proto/visit_transport.proto",
+    "title": "src/transport/grpc/proto/visit.proto",
     "version": "version not set"
   },
   "consumes": [
@@ -14,7 +14,7 @@
     "/v1/visit": {
       "post": {
         "summary": "Update/Create a device",
-        "operationId": "VisitTransport_Set",
+        "operationId": "Visit_Set",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -40,12 +40,12 @@
           }
         ],
         "tags": [
-          "VisitTransport"
+          "Visit"
         ]
       },
       "put": {
         "summary": "Update/Create a device",
-        "operationId": "VisitTransport_Set2",
+        "operationId": "Visit_Set2",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -71,14 +71,14 @@
           }
         ],
         "tags": [
-          "VisitTransport"
+          "Visit"
         ]
       }
     },
-    "/v1/visit/{id}": {
+    "/v1/visit/{ID}": {
       "get": {
         "summary": "Simple return the visit id",
-        "operationId": "VisitTransport_Get",
+        "operationId": "Visit_Get",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -95,7 +95,7 @@
         },
         "parameters": [
           {
-            "name": "id",
+            "name": "ID",
             "in": "path",
             "required": true,
             "type": "integer",
@@ -103,7 +103,7 @@
           }
         ],
         "tags": [
-          "VisitTransport"
+          "Visit"
         ]
       }
     }
@@ -112,14 +112,14 @@
     "pbVisitRequest": {
       "type": "object",
       "properties": {
-        "id": {
+        "ID": {
           "type": "integer",
           "format": "int64"
         },
-        "first_name": {
+        "FirstName": {
           "type": "string"
         },
-        "last_name": {
+        "LastName": {
           "type": "string"
         }
       }
@@ -127,21 +127,21 @@
     "pbVisitResponse": {
       "type": "object",
       "properties": {
-        "id": {
+        "ID": {
           "type": "integer",
           "format": "int64"
         },
-        "first_name": {
+        "FirstName": {
           "type": "string"
         },
-        "last_name": {
+        "LastName": {
           "type": "string"
         },
-        "created_at": {
+        "CreatedAt": {
           "type": "string",
           "format": "date-time"
         },
-        "updated_at": {
+        "UpdatedAt": {
           "type": "string",
           "format": "date-time"
         }

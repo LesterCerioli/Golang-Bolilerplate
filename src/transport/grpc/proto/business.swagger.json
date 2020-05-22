@@ -1,0 +1,374 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "src/transport/grpc/proto/business.proto",
+    "version": "version not set"
+  },
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/v1/business": {
+      "post": {
+        "summary": "Create Business \u0026 Offices \u0026 Main Employee",
+        "operationId": "Business_Create",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbBusinessCreateResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/pbBusinessCreateRequest"
+            }
+          }
+        ],
+        "tags": [
+          "Business"
+        ]
+      }
+    },
+    "/v1/business/{ID}": {
+      "get": {
+        "summary": "Simple return the business by id",
+        "operationId": "Business_Get",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbBusinessResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "ID",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "tags": [
+          "Business"
+        ]
+      },
+      "put": {
+        "summary": "Update Business",
+        "operationId": "Business_Update",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbBusinessResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "ID",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/pbBusinessUpdateRequest"
+            }
+          }
+        ],
+        "tags": [
+          "Business"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "pbBusinessCreateRequest": {
+      "type": "object",
+      "properties": {
+        "Name": {
+          "type": "string"
+        },
+        "Website": {
+          "type": "string"
+        },
+        "offices": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/pbOfficeRequest"
+          }
+        },
+        "Employees": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/pbEmployeeRequest"
+          }
+        }
+      },
+      "title": "Business Create Request"
+    },
+    "pbBusinessCreateResponse": {
+      "type": "object",
+      "properties": {
+        "ID": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "Name": {
+          "type": "string"
+        },
+        "Website": {
+          "type": "string"
+        },
+        "Offices": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/pbOfficesResponse"
+          }
+        },
+        "Employees": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/pbEmployeeResponse"
+          }
+        },
+        "CreatedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "UpdatedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "title": "Business Create Response"
+    },
+    "pbBusinessResponse": {
+      "type": "object",
+      "properties": {
+        "ID": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "Name": {
+          "type": "string"
+        },
+        "Website": {
+          "type": "string"
+        },
+        "CreatedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "UpdatedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "title": "Business Get/Update Response"
+    },
+    "pbBusinessUpdateRequest": {
+      "type": "object",
+      "properties": {
+        "ID": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "Name": {
+          "type": "string"
+        },
+        "Website": {
+          "type": "string"
+        }
+      },
+      "title": "Business Update Request"
+    },
+    "pbEmployeeRequest": {
+      "type": "object",
+      "properties": {
+        "FirstName": {
+          "type": "string"
+        },
+        "LastName": {
+          "type": "string"
+        },
+        "Email": {
+          "type": "string"
+        },
+        "Password": {
+          "type": "string"
+        }
+      },
+      "title": "Employee Create Request"
+    },
+    "pbEmployeeResponse": {
+      "type": "object",
+      "properties": {
+        "ID": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "FirstName": {
+          "type": "string"
+        },
+        "LastName": {
+          "type": "string"
+        },
+        "Email": {
+          "type": "string"
+        },
+        "Active": {
+          "type": "boolean",
+          "format": "boolean"
+        },
+        "CreatedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "UpdatedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "title": "Employee Create Response, Update Request + Response"
+    },
+    "pbOfficeRequest": {
+      "type": "object",
+      "properties": {
+        "Name": {
+          "type": "string"
+        },
+        "Email": {
+          "type": "string"
+        },
+        "Phone": {
+          "type": "string"
+        },
+        "Country": {
+          "type": "string"
+        },
+        "State": {
+          "type": "string"
+        },
+        "City": {
+          "type": "string"
+        },
+        "Address": {
+          "type": "string"
+        },
+        "Zipcode": {
+          "type": "string"
+        }
+      },
+      "title": "Office Create Request"
+    },
+    "pbOfficesResponse": {
+      "type": "object",
+      "properties": {
+        "ID": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "Name": {
+          "type": "string"
+        },
+        "Email": {
+          "type": "string"
+        },
+        "Phone": {
+          "type": "string"
+        },
+        "Country": {
+          "type": "string"
+        },
+        "State": {
+          "type": "string"
+        },
+        "City": {
+          "type": "string"
+        },
+        "Address": {
+          "type": "string"
+        },
+        "Zipcode": {
+          "type": "string"
+        },
+        "CreatedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "UpdatedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "title": "Office Create Response, Update Request + Response"
+    },
+    "protobufAny": {
+      "type": "object",
+      "properties": {
+        "type_url": {
+          "type": "string"
+        },
+        "value": {
+          "type": "string",
+          "format": "byte"
+        }
+      }
+    },
+    "runtimeError": {
+      "type": "object",
+      "properties": {
+        "error": {
+          "type": "string"
+        },
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/protobufAny"
+          }
+        }
+      }
+    }
+  }
+}
