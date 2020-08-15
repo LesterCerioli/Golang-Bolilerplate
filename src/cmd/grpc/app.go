@@ -27,11 +27,11 @@ import (
 	sqlLogger "github.com/eldad87/go-boilerplate/src/pkg/go-sql-driver/logger"
 	databaseDriver "github.com/go-sql-driver/mysql"
 
+	sqlmwInterceptor "github.com/eldad87/go-boilerplate/src/pkg/ngrok/sqlmw"
+	"github.com/ngrok/sqlmw"
+
 	"github.com/gobuffalo/packr"
 	"github.com/rubenv/sql-migrate"
-
-	"github.com/luna-duclos/instrumentedsql"
-	instrumentedsqlOpenTracing "github.com/luna-duclos/instrumentedsql/opentracing"
 
 	"github.com/eldad87/go-boilerplate/src/app"
 	"github.com/eldad87/go-boilerplate/src/pkg/crypto"
@@ -169,10 +169,10 @@ func main() {
 	 * PreRequisite: DataBase
 	 * **************************** */
 	// Logger
-
 	databaseDriver.SetLogger(sqlLogger.NewLogger(logger))
-	// Opentracing https://ceshihao.github.io/2018/11/29/tracing-db-operations/
-	sql.Register("instrumented-mysql", instrumentedsql.WrapDriver(databaseDriver.MySQLDriver{}, instrumentedsql.WithTracer(instrumentedsqlOpenTracing.NewTracer(false))))
+	// Tracer
+	mysqlInterceptor := sqlmwInterceptor.Interceptor{Tracer: tracer}
+	sql.Register("instrumented-mysql", sqlmw.Driver(databaseDriver.MySQLDriver{}, mysqlInterceptor))
 	db, err := sql.Open("instrumented-mysql", conf.GetString("database.dsn"))
 	if err != nil {
 		logger.Sugar().Fatal("Database failed to listen: %v. Due to error: %v", conf.GetString("database.dsn"), err)

@@ -9,7 +9,6 @@ require (
 	github.com/RichardKnop/machinery v1.8.2
 	github.com/RichardKnop/redsync v1.2.0
 	github.com/TheZeroSlave/zapsentry v1.4.0
-	github.com/VojtechVitek/rerun v0.0.2 // indirect
 	github.com/afex/hystrix-go v0.0.0-20180502004556-fa1af6a1f4f5
 	github.com/aws/aws-sdk-go v1.31.3
 	github.com/beorn7/perks v1.0.1
@@ -17,7 +16,6 @@ require (
 	github.com/cespare/xxhash/v2 v2.1.1
 	github.com/eapache/go-resiliency v1.1.0
 	github.com/envoyproxy/protoc-gen-validate v0.3.0
-	github.com/fatih/structtag v1.2.0 // indirect
 	github.com/friendsofgo/errors v0.9.2
 	github.com/fsnotify/fsnotify v1.4.9 // indirect
 	github.com/go-playground/validator/v10 v10.3.0
@@ -36,7 +34,6 @@ require (
 	github.com/grpc-ecosystem/go-grpc-prometheus v1.2.0
 	github.com/grpc-ecosystem/grpc-gateway v1.14.5
 	github.com/heptiolabs/healthcheck v0.0.0-20180807145615-6ff867650f40
-	github.com/iancoleman/strcase v0.0.0-20191112232945-16388991a334 // indirect
 	github.com/ibm-developer/generator-ibm-core-golang-gin v1.0.4
 	github.com/jaegertracing/jaeger-client-go v2.23.1+incompatible
 	github.com/jaegertracing/jaeger-lib v2.2.0+incompatible
@@ -46,11 +43,10 @@ require (
 	github.com/kat-co/vala v0.0.0-20170210184112-42e1d8b61f12
 	github.com/kelseyhightower/envconfig v1.4.0
 	github.com/klauspost/compress v1.10.2
-	github.com/luna-duclos/instrumentedsql v1.1.2
-	github.com/lyft/protoc-gen-star v0.4.15 // indirect
 	github.com/magefile/mage v1.9.0
 	github.com/matttproud/golang_protobuf_extensions v1.0.1
 	github.com/mitchellh/mapstructure v1.3.0
+	github.com/ngrok/sqlmw v0.0.0-20200129213757-d5c93a81bec6
 	github.com/opentracing-contrib/go-stdlib v0.0.0-20190519235532-cf7a6c988dc9
 	github.com/opentracing/opentracing-go v1.1.0
 	github.com/pelletier/go-toml v1.8.0 // indirect
@@ -94,6 +90,7 @@ require (
 	google.golang.org/genproto v0.0.0-20200521103424-e9a78aa275b7
 	google.golang.org/grpc v1.28.0
 	google.golang.org/protobuf v1.23.0
+	gopkg.in/DATA-DOG/go-sqlmock.v1 v1.3.0 // indirect
 	gopkg.in/guregu/null.v4 v4.0.0
 	gopkg.in/ini.v1 v1.56.0 // indirect
 	gopkg.in/yaml.v2 v2.3.0
