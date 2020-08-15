@@ -16,6 +16,8 @@ func (vs *VisitServer) Get(c context.Context, id *pb.ID) (*pb.VisitResponse, err
 	v, err := vs.VisitService.Get(c, &i)
 	if err != nil {
 		return nil, err
+	} else if v == nil {
+		return &pb.VisitResponse{}, nil
 	}
 
 	return vs.visitToProto(v)

@@ -22,7 +22,11 @@ type VisitService struct {
 
 func (vs *VisitService) Get(c context.Context, id *uint) (*app.Visit, error) {
 	bVisit, err := models.FindVisit(c, vs.db, *id)
-	if err != nil {
+
+	// No record found
+	if err == sql.ErrNoRows {
+		return nil, nil
+	} else if err != nil {
 		return nil, err
 	}
 

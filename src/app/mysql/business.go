@@ -28,7 +28,11 @@ type BusinessService struct {
 
 func (bs *BusinessService) Get(c context.Context, id *uint) (*app.Business, error) {
 	bBusiness, err := models.FindBusiness(c, bs.db, *id)
-	if err != nil {
+
+	// No record found
+	if err == sql.ErrNoRows {
+		return nil, nil
+	} else if err != nil {
 		return nil, err
 	}
 

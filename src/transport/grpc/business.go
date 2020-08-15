@@ -20,6 +20,8 @@ func (bs *BusinessServer) Get(c context.Context, id *pb.ID) (*pb.BusinessRespons
 	b, err := bs.BusinessService.Get(c, &i)
 	if err != nil {
 		return nil, err
+	} else if b == nil {
+		return &pb.BusinessResponse{}, nil
 	}
 
 	res := &pb.BusinessResponse{}
