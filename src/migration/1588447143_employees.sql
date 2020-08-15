@@ -1,7 +1,7 @@
 -- +migrate Up
 CREATE TABLE `employees` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `first_name` varchar(255) DEFAULT NOT NULL,
+  `first_name` varchar(255) NOT NULL,
   `last_name` varchar(255) DEFAULT NULL,
   `email` varchar(255) DEFAULT NULL,
   `password` char(60) CHARACTER SET latin1 COLLATE latin1_bin DEFAULT NULL,
