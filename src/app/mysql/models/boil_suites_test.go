@@ -12,57 +12,100 @@ import "testing"
 // It does NOT run each operation group in parallel.
 // Separating the tests thusly grants avoidance of Postgres deadlocks.
 func TestParent(t *testing.T) {
+	t.Run("Accounts", testAccounts)
+	t.Run("Tenants", testTenants)
+	t.Run("Users", testUsers)
 	t.Run("Visits", testVisits)
 }
 
 func TestDelete(t *testing.T) {
+	t.Run("Accounts", testAccountsDelete)
+	t.Run("Tenants", testTenantsDelete)
+	t.Run("Users", testUsersDelete)
 	t.Run("Visits", testVisitsDelete)
 }
 
 func TestQueryDeleteAll(t *testing.T) {
+	t.Run("Accounts", testAccountsQueryDeleteAll)
+	t.Run("Tenants", testTenantsQueryDeleteAll)
+	t.Run("Users", testUsersQueryDeleteAll)
 	t.Run("Visits", testVisitsQueryDeleteAll)
 }
 
 func TestSliceDeleteAll(t *testing.T) {
+	t.Run("Accounts", testAccountsSliceDeleteAll)
+	t.Run("Tenants", testTenantsSliceDeleteAll)
+	t.Run("Users", testUsersSliceDeleteAll)
 	t.Run("Visits", testVisitsSliceDeleteAll)
 }
 
 func TestExists(t *testing.T) {
+	t.Run("Accounts", testAccountsExists)
+	t.Run("Tenants", testTenantsExists)
+	t.Run("Users", testUsersExists)
 	t.Run("Visits", testVisitsExists)
 }
 
 func TestFind(t *testing.T) {
+	t.Run("Accounts", testAccountsFind)
+	t.Run("Tenants", testTenantsFind)
+	t.Run("Users", testUsersFind)
 	t.Run("Visits", testVisitsFind)
 }
 
 func TestBind(t *testing.T) {
+	t.Run("Accounts", testAccountsBind)
+	t.Run("Tenants", testTenantsBind)
+	t.Run("Users", testUsersBind)
 	t.Run("Visits", testVisitsBind)
 }
 
 func TestOne(t *testing.T) {
+	t.Run("Accounts", testAccountsOne)
+	t.Run("Tenants", testTenantsOne)
+	t.Run("Users", testUsersOne)
 	t.Run("Visits", testVisitsOne)
 }
 
 func TestAll(t *testing.T) {
+	t.Run("Accounts", testAccountsAll)
+	t.Run("Tenants", testTenantsAll)
+	t.Run("Users", testUsersAll)
 	t.Run("Visits", testVisitsAll)
 }
 
 func TestCount(t *testing.T) {
+	t.Run("Accounts", testAccountsCount)
+	t.Run("Tenants", testTenantsCount)
+	t.Run("Users", testUsersCount)
 	t.Run("Visits", testVisitsCount)
 }
 
 func TestHooks(t *testing.T) {
+	t.Run("Accounts", testAccountsHooks)
+	t.Run("Tenants", testTenantsHooks)
+	t.Run("Users", testUsersHooks)
 	t.Run("Visits", testVisitsHooks)
 }
 
 func TestInsert(t *testing.T) {
+	t.Run("Accounts", testAccountsInsert)
+	t.Run("Accounts", testAccountsInsertWhitelist)
+	t.Run("Tenants", testTenantsInsert)
+	t.Run("Tenants", testTenantsInsertWhitelist)
+	t.Run("Users", testUsersInsert)
+	t.Run("Users", testUsersInsertWhitelist)
 	t.Run("Visits", testVisitsInsert)
 	t.Run("Visits", testVisitsInsertWhitelist)
 }
 
 // TestToOne tests cannot be run in parallel
 // or deadlocks can occur.
-func TestToOne(t *testing.T) {}
+func TestToOne(t *testing.T) {
+	t.Run("AccountToTenantUsingTenant", testAccountToOneTenantUsingTenant)
+	t.Run("UserToAccountUsingAccount", testUserToOneAccountUsingAccount)
+	t.Run("UserToTenantUsingTenant", testUserToOneTenantUsingTenant)
+}
 
 // TestOneToOne tests cannot be run in parallel
 // or deadlocks can occur.
@@ -70,15 +113,27 @@ func TestOneToOne(t *testing.T) {}
 
 // TestToMany tests cannot be run in parallel
 // or deadlocks can occur.
-func TestToMany(t *testing.T) {}
+func TestToMany(t *testing.T) {
+	t.Run("AccountToUsers", testAccountToManyUsers)
+	t.Run("TenantToAccounts", testTenantToManyAccounts)
+	t.Run("TenantToUsers", testTenantToManyUsers)
+}
 
 // TestToOneSet tests cannot be run in parallel
 // or deadlocks can occur.
-func TestToOneSet(t *testing.T) {}
+func TestToOneSet(t *testing.T) {
+	t.Run("AccountToTenantUsingAccounts", testAccountToOneSetOpTenantUsingTenant)
+	t.Run("UserToAccountUsingUsers", testUserToOneSetOpAccountUsingAccount)
+	t.Run("UserToTenantUsingUsers", testUserToOneSetOpTenantUsingTenant)
+}
 
 // TestToOneRemove tests cannot be run in parallel
 // or deadlocks can occur.
-func TestToOneRemove(t *testing.T) {}
+func TestToOneRemove(t *testing.T) {
+	t.Run("AccountToTenantUsingAccounts", testAccountToOneRemoveOpTenantUsingTenant)
+	t.Run("UserToAccountUsingUsers", testUserToOneRemoveOpAccountUsingAccount)
+	t.Run("UserToTenantUsingUsers", testUserToOneRemoveOpTenantUsingTenant)
+}
 
 // TestOneToOneSet tests cannot be run in parallel
 // or deadlocks can occur.
@@ -90,32 +145,59 @@ func TestOneToOneRemove(t *testing.T) {}
 
 // TestToManyAdd tests cannot be run in parallel
 // or deadlocks can occur.
-func TestToManyAdd(t *testing.T) {}
+func TestToManyAdd(t *testing.T) {
+	t.Run("AccountToUsers", testAccountToManyAddOpUsers)
+	t.Run("TenantToAccounts", testTenantToManyAddOpAccounts)
+	t.Run("TenantToUsers", testTenantToManyAddOpUsers)
+}
 
 // TestToManySet tests cannot be run in parallel
 // or deadlocks can occur.
-func TestToManySet(t *testing.T) {}
+func TestToManySet(t *testing.T) {
+	t.Run("AccountToUsers", testAccountToManySetOpUsers)
+	t.Run("TenantToAccounts", testTenantToManySetOpAccounts)
+	t.Run("TenantToUsers", testTenantToManySetOpUsers)
+}
 
 // TestToManyRemove tests cannot be run in parallel
 // or deadlocks can occur.
-func TestToManyRemove(t *testing.T) {}
+func TestToManyRemove(t *testing.T) {
+	t.Run("AccountToUsers", testAccountToManyRemoveOpUsers)
+	t.Run("TenantToAccounts", testTenantToManyRemoveOpAccounts)
+	t.Run("TenantToUsers", testTenantToManyRemoveOpUsers)
+}
 
 func TestReload(t *testing.T) {
+	t.Run("Accounts", testAccountsReload)
+	t.Run("Tenants", testTenantsReload)
+	t.Run("Users", testUsersReload)
 	t.Run("Visits", testVisitsReload)
 }
 
 func TestReloadAll(t *testing.T) {
+	t.Run("Accounts", testAccountsReloadAll)
+	t.Run("Tenants", testTenantsReloadAll)
+	t.Run("Users", testUsersReloadAll)
 	t.Run("Visits", testVisitsReloadAll)
 }
 
 func TestSelect(t *testing.T) {
+	t.Run("Accounts", testAccountsSelect)
+	t.Run("Tenants", testTenantsSelect)
+	t.Run("Users", testUsersSelect)
 	t.Run("Visits", testVisitsSelect)
 }
 
 func TestUpdate(t *testing.T) {
+	t.Run("Accounts", testAccountsUpdate)
+	t.Run("Tenants", testTenantsUpdate)
+	t.Run("Users", testUsersUpdate)
 	t.Run("Visits", testVisitsUpdate)
 }
 
 func TestSliceUpdateAll(t *testing.T) {
+	t.Run("Accounts", testAccountsSliceUpdateAll)
+	t.Run("Tenants", testTenantsSliceUpdateAll)
+	t.Run("Users", testUsersSliceUpdateAll)
 	t.Run("Visits", testVisitsSliceUpdateAll)
 }

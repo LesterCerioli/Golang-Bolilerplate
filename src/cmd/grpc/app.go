@@ -14,11 +14,11 @@ import (
 	service "github.com/eldad87/go-boilerplate/src/app/mysql"
 	"github.com/eldad87/go-boilerplate/src/config"
 	grpcGatewayError "github.com/eldad87/go-boilerplate/src/pkg/grpc-gateway/error"
-	grpc_status_v9validator "github.com/eldad87/go-boilerplate/src/pkg/grpc/middleware/status/validator.v10"
+	grpc_status_validator "github.com/eldad87/go-boilerplate/src/pkg/grpc/middleware/status/validator.v10"
 	grpc_validator "github.com/eldad87/go-boilerplate/src/pkg/grpc/middleware/validator/protoc_gen_validate"
 	promZap "github.com/eldad87/go-boilerplate/src/pkg/uber/zap"
 	grpcTransport "github.com/eldad87/go-boilerplate/src/transport/grpc"
-	"github.com/eldad87/go-boilerplate/src/transport/grpc/proto"
+	pb "github.com/eldad87/go-boilerplate/src/transport/grpc/proto"
 	"github.com/jmattheis/go-packr-swagger-ui"
 
 	null_v4_validation "github.com/eldad87/go-boilerplate/src/pkg/validator/custom/guregu/null-v4"
@@ -32,6 +32,7 @@ import (
 	sqlmwInterceptor "github.com/eldad87/go-boilerplate/src/pkg/ngrok/sqlmw"
 	"github.com/ngrok/sqlmw"
 
+	//"github.com/eldad87/go-boilerplate/src/pkg/crypto"
 	"github.com/grpc-ecosystem/go-grpc-middleware"
 	"github.com/grpc-ecosystem/go-grpc-middleware/logging/zap"
 	"github.com/grpc-ecosystem/go-grpc-middleware/recovery"
@@ -158,6 +159,11 @@ func main() {
 	opentracing.SetGlobalTracer(tracer)
 
 	/*
+	 * PreRequisite: Other
+	 * **************************** */
+	//passwordHandler := crypto.Hash{}
+
+	/*
 	 * PreRequisite: DataBase
 	 * **************************** */
 	// Logger
@@ -205,7 +211,7 @@ func main() {
 			grpc_zap.StreamServerInterceptor(logger),
 			grpc_recovery.StreamServerInterceptor(),
 			grpc_validator.StreamServerInterceptor(),
-			grpc_status_v9validator.StreamServerInterceptor(),
+			grpc_status_validator.StreamServerInterceptor(),
 		)),
 		grpc.UnaryInterceptor(grpc_middleware.ChainUnaryServer(
 			grpc_ctxtags.UnaryServerInterceptor(),
@@ -214,7 +220,7 @@ func main() {
 			grpc_zap.UnaryServerInterceptor(logger),
 			grpc_recovery.UnaryServerInterceptor(),
 			grpc_validator.UnaryServerInterceptor(),
-			grpc_status_v9validator.UnaryServerInterceptor(),
+			grpc_status_validator.UnaryServerInterceptor(),
 		)),
 	)
 	defer grpcServer.GracefulStop()
@@ -223,16 +229,17 @@ func main() {
 	// Register valuer for guregu/null.v4
 	null_v4_validation.RegisterSQLNullValuer(validator)
 
-	/*	err = null_v4_validation.RegisterIsUpdate(validator)
-		if err != nil {
-			logger.Error("Failed to register isUpdate validation")
-		}
-	*/
 	// Visit Service
 	visitService := service.NewVisitService(db, validator)
 	grpcVisitServer := grpcTransport.VisitServer{VisitService: visitService}
 	pb.RegisterVisitServer(grpcServer, &grpcVisitServer)
 
+	// Identity Service
+	/*accountService := service.NewAccountService(db, validator, passwordHandler, logger)
+	grpcAccountServer := grpcTransport.AccountServer{AccountService: accountService, Logger: logger}
+	pb.RegisterAccountServer(grpcServer, &grpcAccountServer)
+	app.RegisterAccountServiceValidators(accountService, validator, logger) // Add Custom validators
+	*/
 	// Start listening to gRPC requests
 	go func() {
 		if err := grpcServer.Serve(lis); err != nil {
@@ -288,6 +295,11 @@ func main() {
 	err = pb.RegisterVisitHandlerFromEndpoint(ctx, mux, ":"+conf.GetString("app.grpc.port"), opts)
 	if err != nil {
 		logger.Sugar().Errorf("Failed to register Visit Service %+v", err)
+	}
+
+	err = pb.RegisterAccountHandlerFromEndpoint(ctx, mux, ":"+conf.GetString("app.grpc.port"), opts)
+	if err != nil {
+		logger.Sugar().Errorf("Failed to register Account Service %+v", err)
 	}
 	http.HandleFunc(conf.GetString("app.grpc.http_route_prefix")+"/", muxHandlerFunc)
 

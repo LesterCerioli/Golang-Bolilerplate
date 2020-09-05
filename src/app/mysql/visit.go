@@ -9,18 +9,26 @@ import (
 	"github.com/eldad87/go-boilerplate/src/pkg/validator"
 	"github.com/volatiletech/null/v8"
 	"github.com/volatiletech/sqlboiler/v4/boil"
+	"time"
 )
 
-func NewVisitService(db *sql.DB, sv validator.StructValidator) *VisitService {
-	return &VisitService{db, sv}
+func NewVisitService(db *sql.DB, sv validator.StructValidator) *visitService {
+	return &visitService{db, sv}
 }
 
-type VisitService struct {
+type Tenant struct {
+	ID        uint       `json:"id" validate:"omitempty,gte=0"`
+	Name      string     `validate:"required_without=ID"`
+	Accounts  []*Account `json:"accounts" validate:"omitempty,dive,required"`
+	CreatedAt time.Time  `json:"created_at"`
+	UpdatedAt time.Time  `json:"updated_at"`
+}
+type visitService struct {
 	db *sql.DB
 	sv validator.StructValidator
 }
 
-func (vs *VisitService) Get(c context.Context, id *uint) (*app.Visit, error) {
+func (vs *visitService) Get(c context.Context, id *uint) (*app.Visit, error) {
 	bVisit, err := models.FindVisit(c, vs.db, *id)
 
 	// No record found
@@ -33,7 +41,7 @@ func (vs *VisitService) Get(c context.Context, id *uint) (*app.Visit, error) {
 	return sqlBoilerToVisit(bVisit), nil
 }
 
-func (vs *VisitService) Set(c context.Context, v *app.Visit) (*app.Visit, error) {
+func (vs *visitService) Set(c context.Context, v *app.Visit) (*app.Visit, error) {
 	bVisit := models.Visit{
 		ID:        v.ID,
 		FirstName: null.StringFrom(v.FirstName),

@@ -46,9 +46,17 @@ shell:
 # Applicative
 #############################
 
+grpc-gateway-googleapis:
+	docker-compose exec app /bin/bash -c "curl https://github.com/grpc-ecosystem/grpc-gateway/archive/master.zip -L --output gateway.zip"
+	docker-compose exec app /bin/bash -c "unzip gateway.zip 'grpc-gateway-*/third_party/googleapis/*' -d ./"
+	docker-compose exec app /bin/bash -c "rm gateway.zip"
+	docker-compose exec app /bin/bash -c "rm -rf src/transport/grpc/proto/google/* && mkdir -p src/transport/grpc/proto/google"
+	docker-compose exec app /bin/bash -c "mv -f ./grpc-gateway-master/third_party/googleapis/google/* src/transport/grpc/proto/google/."
+	docker-compose exec app /bin/bash -c "rm -rf grpc-gateway-*/"
+
 protobuf:
-	docker-compose exec app /bin/bash -c "protoc -I/usr/local/include -I. -I./vendor -I/go/src -I/go/src/github.com/grpc-ecosystem/grpc-gateway/third_party/googleapis -I/go/src/github.com/envoyproxy/protoc-gen-validate --go_out=plugins=grpc:. --validate_out=lang=go:. --grpc-gateway_out=logtostderr=true:. --swagger_out=logtostderr=true:. ./src/transport/grpc/proto/*.proto"
-	docker-compose exec app /bin/bash -c "protoc -I/usr/local/include -I. -I./vendor -I/go/src -I/go/src/github.com/grpc-ecosystem/grpc-gateway/third_party/googleapis -I/go/src/github.com/envoyproxy/protoc-gen-validate --gotag_out=logtostderr=true:. ./src/transport/grpc/proto/*.proto"
+	docker-compose exec app /bin/bash -c "protoc -I/usr/local/include -I. -I/go/src -I/go/src/github.com/grpc-ecosystem/grpc-gateway/third_party/googleapis -I/go/src/github.com/envoyproxy/protoc-gen-validate --go_out=plugins=grpc:. --validate_out=lang=go:. --grpc-gateway_out=logtostderr=true:. --swagger_out=logtostderr=true:. ./src/transport/grpc/proto/*.proto"
+	docker-compose exec app /bin/bash -c "protoc -I/usr/local/include -I. -I/go/src -I/go/src/github.com/grpc-ecosystem/grpc-gateway/third_party/googleapis -I/go/src/github.com/envoyproxy/protoc-gen-validate --gotag_out=logtostderr=true:. ./src/transport/grpc/proto/*.proto"
 	docker-compose exec app /bin/bash -c "chown -R 1000:1000 ./src/transport/grpc/proto"
 
 sqlboiler:

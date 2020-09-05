@@ -353,7 +353,7 @@ In this example, We will
  - Document it using OpenAPI (Swagger)
 
 So lets start:
-- Define our `VisitTransport` using protobuf in `transport/grpc/proto/visit_transport.proto`, pay attention to the constrain on `ID`: 
+- Define our `VisitTransport` using protobuf in `transport/grpc/proto/visit.proto`, pay attention to the constrain on `ID`: 
 ```proto
 // ...
 
@@ -401,7 +401,7 @@ message VisitResponse {
 - Generate our gRPC handler, validators, RESTful API and documentation (Swagger):  
   - `make protobuf`  
   \* The auto-generated code is located under the same folder as our `visit_transport.proto` file.
-- Implement the auto-generated `VisitServiceServer interface` (can be found in in `transport/grpc/proto/visit_transport.pb.go`).
+- Implement the auto-generated `VisitServiceServer interface` (can be found in in `transport/grpc/proto/visit.pb.go`).
   - Important! - Use your services to persist your data (`app/*.go`), Inject them as dependency when needed.
   - Store your implementation in a different folder (e.g `transport/grpc/visit_transport.go`) for better separation.
 ```go

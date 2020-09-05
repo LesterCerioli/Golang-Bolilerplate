@@ -6,5 +6,11 @@ package models
 import "testing"
 
 func TestUpsert(t *testing.T) {
+	t.Run("Accounts", testAccountsUpsert)
+
+	t.Run("Tenants", testTenantsUpsert)
+
+	t.Run("Users", testUsersUpsert)
+
 	t.Run("Visits", testVisitsUpsert)
 }
