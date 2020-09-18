@@ -53,6 +53,7 @@ services:
         app_port: 8080
         app_grpc_port: 8082
         protobuf_release_tag: '3.11.4'
+        app_cmd: 'app'
     security_opt:
       - seccomp:unconfined
     volumes:

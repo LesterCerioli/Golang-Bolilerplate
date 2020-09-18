@@ -22,6 +22,9 @@ func GetConfig(env string, confFiles map[string]string) (*viper.Viper, error) {
 	conf.SetDefault("app.request.sleep_window", 5000)
 	conf.SetDefault("app.request.err_per_threshold", 50)
 
+	// Identity app
+	conf.SetDefault("app.identity.http_route_prefix", "/identity")
+
 	// Defaults: Monitoring
 	conf.SetDefault("log.level", "debug")
 	conf.SetDefault("health_check.route.group", "/health")

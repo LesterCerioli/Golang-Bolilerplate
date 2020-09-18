@@ -4,12 +4,13 @@ import (
 	"context"
 	"database/sql"
 
+	"time"
+
 	"github.com/eldad87/go-boilerplate/src/app"
 	"github.com/eldad87/go-boilerplate/src/app/mysql/models"
 	"github.com/eldad87/go-boilerplate/src/pkg/validator"
 	"github.com/volatiletech/null/v8"
 	"github.com/volatiletech/sqlboiler/v4/boil"
-	"time"
 )
 
 func NewVisitService(db *sql.DB, sv validator.StructValidator) *visitService {
@@ -17,11 +18,11 @@ func NewVisitService(db *sql.DB, sv validator.StructValidator) *visitService {
 }
 
 type Tenant struct {
-	ID        uint       `json:"id" validate:"omitempty,gte=0"`
-	Name      string     `validate:"required_without=ID"`
-	Accounts  []*Account `json:"accounts" validate:"omitempty,dive,required"`
-	CreatedAt time.Time  `json:"created_at"`
-	UpdatedAt time.Time  `json:"updated_at"`
+	ID        uint           `json:"id" validate:"omitempty,gte=0"`
+	Name      string         `validate:"required_without=ID"`
+	Accounts  []*app.Account `json:"accounts" validate:"omitempty,dive,required"`
+	CreatedAt time.Time      `json:"created_at"`
+	UpdatedAt time.Time      `json:"updated_at"`
 }
 type visitService struct {
 	db *sql.DB

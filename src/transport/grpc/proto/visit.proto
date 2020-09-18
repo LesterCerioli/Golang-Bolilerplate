@@ -4,7 +4,7 @@ package pb;
 import "google/protobuf/timestamp.proto";
 import "google/api/annotations.proto";
 import "github.com/envoyproxy/protoc-gen-validate/validate/validate.proto";
-import "src/transport/grpc/proto/generics/generics.proto";
+import "src/transport/grpc/proto/generics.proto";
 
 service Visit {
     // Simple return the visit id

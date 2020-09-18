@@ -10,7 +10,7 @@ import (
 	"time"
 
 	"github.com/TheZeroSlave/zapsentry"
-	"github.com/afex/hystrix-go/hystrix/metric_collector"
+	metricCollector "github.com/afex/hystrix-go/hystrix/metric_collector"
 	service "github.com/eldad87/go-boilerplate/src/app/mysql"
 	"github.com/eldad87/go-boilerplate/src/config"
 	grpcGatewayError "github.com/eldad87/go-boilerplate/src/pkg/grpc-gateway/error"
@@ -19,7 +19,7 @@ import (
 	promZap "github.com/eldad87/go-boilerplate/src/pkg/uber/zap"
 	grpcTransport "github.com/eldad87/go-boilerplate/src/transport/grpc"
 	pb "github.com/eldad87/go-boilerplate/src/transport/grpc/proto"
-	"github.com/jmattheis/go-packr-swagger-ui"
+	swaggerui "github.com/jmattheis/go-packr-swagger-ui"
 
 	null_v4_validation "github.com/eldad87/go-boilerplate/src/pkg/validator/custom/guregu/null-v4"
 	v10validator "github.com/go-playground/validator/v10"
@@ -27,18 +27,18 @@ import (
 	sqlLogger "github.com/eldad87/go-boilerplate/src/pkg/go-sql-driver/logger"
 	databaseDriver "github.com/go-sql-driver/mysql"
 	"github.com/gobuffalo/packr"
-	"github.com/rubenv/sql-migrate"
+	migrate "github.com/rubenv/sql-migrate"
 
 	sqlmwInterceptor "github.com/eldad87/go-boilerplate/src/pkg/ngrok/sqlmw"
 	"github.com/ngrok/sqlmw"
 
 	//"github.com/eldad87/go-boilerplate/src/pkg/crypto"
-	"github.com/grpc-ecosystem/go-grpc-middleware"
-	"github.com/grpc-ecosystem/go-grpc-middleware/logging/zap"
-	"github.com/grpc-ecosystem/go-grpc-middleware/recovery"
-	"github.com/grpc-ecosystem/go-grpc-middleware/tags"
-	"github.com/grpc-ecosystem/go-grpc-middleware/tracing/opentracing"
-	"github.com/grpc-ecosystem/go-grpc-prometheus"
+	grpc_middleware "github.com/grpc-ecosystem/go-grpc-middleware"
+	grpc_zap "github.com/grpc-ecosystem/go-grpc-middleware/logging/zap"
+	grpc_recovery "github.com/grpc-ecosystem/go-grpc-middleware/recovery"
+	grpc_ctxtags "github.com/grpc-ecosystem/go-grpc-middleware/tags"
+	grpc_opentracing "github.com/grpc-ecosystem/go-grpc-middleware/tracing/opentracing"
+	grpc_prometheus "github.com/grpc-ecosystem/go-grpc-prometheus"
 	"github.com/grpc-ecosystem/grpc-gateway/runtime"
 	"github.com/heptiolabs/healthcheck"
 	"github.com/ibm-developer/generator-ibm-core-golang-gin/generators/app/templates/plugins"
@@ -234,12 +234,6 @@ func main() {
 	grpcVisitServer := grpcTransport.VisitServer{VisitService: visitService}
 	pb.RegisterVisitServer(grpcServer, &grpcVisitServer)
 
-	// Identity Service
-	/*accountService := service.NewAccountService(db, validator, passwordHandler, logger)
-	grpcAccountServer := grpcTransport.AccountServer{AccountService: accountService, Logger: logger}
-	pb.RegisterAccountServer(grpcServer, &grpcAccountServer)
-	app.RegisterAccountServiceValidators(accountService, validator, logger) // Add Custom validators
-	*/
 	// Start listening to gRPC requests
 	go func() {
 		if err := grpcServer.Serve(lis); err != nil {
@@ -297,10 +291,6 @@ func main() {
 		logger.Sugar().Errorf("Failed to register Visit Service %+v", err)
 	}
 
-	err = pb.RegisterAccountHandlerFromEndpoint(ctx, mux, ":"+conf.GetString("app.grpc.port"), opts)
-	if err != nil {
-		logger.Sugar().Errorf("Failed to register Account Service %+v", err)
-	}
 	http.HandleFunc(conf.GetString("app.grpc.http_route_prefix")+"/", muxHandlerFunc)
 
 	// Swagger
