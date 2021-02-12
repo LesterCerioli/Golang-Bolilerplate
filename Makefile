@@ -54,9 +54,11 @@ grpc-gateway-googleapis:
 	docker-compose exec app /bin/bash -c "mv -f ./grpc-gateway-master/third_party/googleapis/google/* src/transport/grpc/proto/google/."
 	docker-compose exec app /bin/bash -c "rm -rf grpc-gateway-*/"
 
+# Proto, Gateway, Swagger
 protobuf:
-	docker-compose exec app /bin/bash -c "protoc -I/usr/local/include -I. -I/go/src -I/go/src/github.com/grpc-ecosystem/grpc-gateway/third_party/googleapis -I/go/src/github.com/envoyproxy/protoc-gen-validate --go_out=plugins=grpc:. --validate_out=lang=go:. --grpc-gateway_out=logtostderr=true:. --swagger_out=logtostderr=true:. ./src/transport/grpc/proto/*.proto"
-	docker-compose exec app /bin/bash -c "protoc -I/usr/local/include -I. -I/go/src -I/go/src/github.com/grpc-ecosystem/grpc-gateway/third_party/googleapis -I/go/src/github.com/envoyproxy/protoc-gen-validate --gotag_out=logtostderr=true:. ./src/transport/grpc/proto/*.proto"
+	docker-compose exec app /bin/bash -c "protoc -I/usr/local/include -I. -I/go/src -I./src/transport/grpc/proto -I/go/src/github.com/envoyproxy/protoc-gen-validate --go_out . --go_opt paths=source_relative --go-grpc_out . --go-grpc_opt paths=source_relative --validate_out=lang=go:. ./src/transport/grpc/proto/*.proto"
+	docker-compose exec app /bin/bash -c "protoc -I/usr/local/include -I. -I/go/src -I./src/transport/grpc/proto -I/go/src/github.com/envoyproxy/protoc-gen-validate --grpc-gateway_out . --grpc-gateway_opt logtostderr=true --grpc-gateway_opt paths=source_relative --grpc-gateway_opt generate_unbound_methods=true ./src/transport/grpc/proto/*.proto"
+	docker-compose exec app /bin/bash -c "protoc -I/usr/local/include -I. -I/go/src -I./src/transport/grpc/proto -I/go/src/github.com/envoyproxy/protoc-gen-validate --openapiv2_out . --openapiv2_opt logtostderr=true ./src/transport/grpc/proto/*.proto"
 	docker-compose exec app /bin/bash -c "chown -R 1000:1000 ./src/transport/grpc/proto"
 
 sqlboiler:

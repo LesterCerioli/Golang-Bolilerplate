@@ -4,8 +4,6 @@ import (
 	"context"
 	"database/sql"
 
-	"time"
-
 	"github.com/eldad87/go-boilerplate/src/app"
 	"github.com/eldad87/go-boilerplate/src/app/mysql/models"
 	"github.com/eldad87/go-boilerplate/src/pkg/validator"
@@ -17,13 +15,6 @@ func NewVisitService(db *sql.DB, sv validator.StructValidator) *visitService {
 	return &visitService{db, sv}
 }
 
-type Tenant struct {
-	ID        uint           `json:"id" validate:"omitempty,gte=0"`
-	Name      string         `validate:"required_without=ID"`
-	Accounts  []*app.Account `json:"accounts" validate:"omitempty,dive,required"`
-	CreatedAt time.Time      `json:"created_at"`
-	UpdatedAt time.Time      `json:"updated_at"`
-}
 type visitService struct {
 	db *sql.DB
 	sv validator.StructValidator

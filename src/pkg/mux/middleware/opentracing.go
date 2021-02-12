@@ -18,7 +18,7 @@ func Opentracing(next http.Handler) http.Handler {
 		ctx := r.Context()
 		route := mux.CurrentRoute(r)
 
-		span, ctx := opentracing.StartSpanFromContext(ctx, "http_identity")
+		span, ctx := opentracing.StartSpanFromContext(ctx, "http")
 		defer span.Finish()
 
 		span.SetTag(RequestMethod, r.Method)

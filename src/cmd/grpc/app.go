@@ -13,7 +13,8 @@ import (
 	metricCollector "github.com/afex/hystrix-go/hystrix/metric_collector"
 	service "github.com/eldad87/go-boilerplate/src/app/mysql"
 	"github.com/eldad87/go-boilerplate/src/config"
-	grpcGatewayError "github.com/eldad87/go-boilerplate/src/pkg/grpc-gateway/error"
+
+	//	grpcGatewayError "github.com/eldad87/go-boilerplate/src/pkg/grpc-gateway/error"
 	grpc_status_validator "github.com/eldad87/go-boilerplate/src/pkg/grpc/middleware/status/validator.v10"
 	grpc_validator "github.com/eldad87/go-boilerplate/src/pkg/grpc/middleware/validator/protoc_gen_validate"
 	promZap "github.com/eldad87/go-boilerplate/src/pkg/uber/zap"
@@ -39,11 +40,12 @@ import (
 	grpc_ctxtags "github.com/grpc-ecosystem/go-grpc-middleware/tags"
 	grpc_opentracing "github.com/grpc-ecosystem/go-grpc-middleware/tracing/opentracing"
 	grpc_prometheus "github.com/grpc-ecosystem/go-grpc-prometheus"
-	"github.com/grpc-ecosystem/grpc-gateway/runtime"
+	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	"github.com/heptiolabs/healthcheck"
 	"github.com/ibm-developer/generator-ibm-core-golang-gin/generators/app/templates/plugins"
 	jaegerZap "github.com/jaegertracing/jaeger-client-go/log/zap"
 	jaegerprom "github.com/jaegertracing/jaeger-lib/metrics/prometheus"
+
 	"github.com/opentracing-contrib/go-stdlib/nethttp"
 	"github.com/opentracing/opentracing-go"
 	"github.com/prometheus/client_golang/prometheus"
@@ -232,6 +234,7 @@ func main() {
 	// Visit Service
 	visitService := service.NewVisitService(db, validator)
 	grpcVisitServer := grpcTransport.VisitServer{VisitService: visitService}
+
 	pb.RegisterVisitServer(grpcServer, &grpcVisitServer)
 
 	// Start listening to gRPC requests
@@ -255,7 +258,7 @@ func main() {
 	ctx, cancel := context.WithCancel(ctx)
 	defer cancel()
 	// Customize our error response
-	runtime.HTTPError = grpcGatewayError.CustomHTTPError
+	//TODO	runtime.HTTPError = grpcGatewayError.CustomHTTPError
 	mux := runtime.NewServeMux(
 		runtime.WithMetadata(
 			func(ctx context.Context, r *http.Request) metadata.MD {
@@ -306,6 +309,6 @@ func main() {
 	/*
 	 * Start listening for incoming HTTP requests
 	 * **************************** */
-	logger.Info("Starting..")
+	logger.Info("Starting on port " + conf.GetString("app.port"))
 	http.ListenAndServe(":"+conf.GetString("app.port"), nil)
 }

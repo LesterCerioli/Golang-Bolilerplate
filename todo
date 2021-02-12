@@ -3,10 +3,10 @@ AuthBoss
     - Tennant aware (register by domain, email sender, view, etc)
 
 OAuth2 server
-    - Basic implementation & polymorphic relationship
+    - Basic implementation & polymorphic relationship (?)
 
 GRPC
-    - OAuth2 Auth middleware. Inject User (, Account & Tenant) into context. gRPC-Gateway forward the 'authentication' header as meta-data. JWT token!
+    - OAuth2 Auth middleware. Inject User (Account & Tenant) into context. gRPC-Gateway forward the 'authentication' header as meta-data. JWT token!
         Scopes compare 
     - Request Id from context (& One for HTTP for Gateway's logs?)
         Gateway middleware Pass 'x-request-id' header as metadata
