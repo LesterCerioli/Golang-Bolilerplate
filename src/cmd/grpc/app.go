@@ -14,7 +14,7 @@ import (
 	service "github.com/eldad87/go-boilerplate/src/app/mysql"
 	"github.com/eldad87/go-boilerplate/src/config"
 
-	//	grpcGatewayError "github.com/eldad87/go-boilerplate/src/pkg/grpc-gateway/error"
+	//grpcGatewayError "github.com/eldad87/go-boilerplate/src/pkg/grpc-gateway/error"
 	grpc_status_validator "github.com/eldad87/go-boilerplate/src/pkg/grpc/middleware/status/validator.v10"
 	grpc_validator "github.com/eldad87/go-boilerplate/src/pkg/grpc/middleware/validator/protoc_gen_validate"
 	promZap "github.com/eldad87/go-boilerplate/src/pkg/uber/zap"
@@ -257,8 +257,7 @@ func main() {
 	ctx := context.Background()
 	ctx, cancel := context.WithCancel(ctx)
 	defer cancel()
-	// Customize our error response
-	//TODO	runtime.HTTPError = grpcGatewayError.CustomHTTPError
+
 	mux := runtime.NewServeMux(
 		runtime.WithMetadata(
 			func(ctx context.Context, r *http.Request) metadata.MD {
@@ -277,6 +276,8 @@ func main() {
 				return metadata.New(carrier)
 			},
 		),
+		// Customize our error response
+		// runtime.WithErrorHandler(grpcGatewayError.CustomHTTPError),
 	)
 
 	// https://github.com/grpc-ecosystem/grpc-gateway/issues/348
