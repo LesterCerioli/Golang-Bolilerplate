@@ -1,6 +1,10 @@
 package main
 
-
+import (
+	"flag"
+	"log"
+	"generator-project/internal/generator"
+)
 
 func main() {
 	projectName ;= flag.string("name", "", "Name of project")
