@@ -3,11 +3,11 @@ package main
 import (
 	"flag"
 	"log"
-	"generator-project/internal/generator"
+	"project-generator/internal/generator" // Certifique-se de que o caminho do import está correto
 )
 
 func main() {
-	projectName ;= flag.string("name", "", "Name of project")
+	projectName := flag.String("name", "", "Name of the project")
 	flag.Parse()
 
 	if *projectName == "" {
@@ -16,7 +16,8 @@ func main() {
 
 	err := generator.GenerateProject(*projectName)
 	if err != nil {
-		log.Fatal("Error generating project: %v", err)
+		log.Fatalf("Error generating project: %v", err)
 	}
+
 	log.Printf("Project %s generated successfully.", *projectName)
 }
